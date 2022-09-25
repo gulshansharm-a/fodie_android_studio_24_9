@@ -28,6 +28,10 @@ import java.util.concurrent.TimeUnit;
 
 public class login extends AppCompatActivity {
 FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private String mVerificationId  ;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +39,8 @@ FirebaseAuth mAuth = FirebaseAuth.getInstance();
         findViewById(R.id.buttontosubmit).setVisibility(View.INVISIBLE);
 
         EditText etnumber =  findViewById(R.id.editText);
-        getSupportActionBar().hide();
-        if (FirebaseAuth.getInstance().getCurrentUser()!=null) {
-            Intent i = new Intent(login.this,HomeActivity.class);
-            startActivity(i);
-            return;
-        }
 
-            PhoneAuthOptions options =
+        PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber("+918899111508")       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
