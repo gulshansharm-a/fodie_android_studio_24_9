@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.gulshan.myapplication.R;
 
@@ -55,9 +57,7 @@ import java.util.Objects;
 public class MapsFragment extends Fragment {
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 100;
-    private static final int RESULT_OK = 100;
     private boolean locationPermissionGranted;
-    private boolean got_location = false;
     LatLng current_location = null;
     GoogleMap map;
     LocationRequest request;
@@ -68,7 +68,28 @@ public class MapsFragment extends Fragment {
             map = googleMap;
             getActivity().findViewById(R.id.autoComplete).setVisibility(View.VISIBLE);
             AutoCompleteTextView textView = getActivity().findViewById(R.id.autoComplete);
+            textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String selection = parent.getItemAtPosition(position).toString();
+                    Query query = FirebaseDatabase.getInstance().getReference().child("owners").orderByChild("name").equalTo(selection);
+                    query.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Toast.makeText(getActivity(), snapshot.toString(), Toast.LENGTH_SHORT).show();
+                        for(DataSnapshot snapshot1:snapshot.getChildren()) {
+                            moveCameraTo(snapshot1.child("lat").getValue(String.class),snapshot1.child("lon").getValue(String.class));
+                        }
 
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            });
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
@@ -76,10 +97,8 @@ public class MapsFragment extends Fragment {
             search();
             googleMap.setMyLocationEnabled(true);
             checkGps();
-
             getLocationPermission();
             getcurrentLocation();
-            
             addMarkers();
 
         }
@@ -118,7 +137,7 @@ public class MapsFragment extends Fragment {
                     for  (DataSnapshot snapshot1 :snapshot.getChildren()) {
                         String address = snapshot1.child("address").getValue().toString();
                         String s = snapshot1.child("name").getValue().toString();
-                        arrayList.add(s+" "+address);
+                        arrayList.add(s);
                     }
                     System.out.println(arrayList);
                     ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item,arrayList);
@@ -270,5 +289,14 @@ public class MapsFragment extends Fragment {
             }
         });
 
+    }
+    private void moveCameraTo(String lat_string,String lon_string) {
+
+        double lat = Double.valueOf(lat_string+"d");
+        double lon = Double.valueOf(lon_string+"d");
+        LatLng sydney = new LatLng(lat, lon);
+
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(sydney, 20);
+        map.moveCamera(update);
     }
 }
