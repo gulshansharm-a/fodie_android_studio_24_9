@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.gulshan.myapplication.R;
 import com.gulshan.myapplication.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment {
@@ -20,7 +21,7 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
-
+        getActivity().findViewById(R.id.autoComplete).setVisibility(View.INVISIBLE);
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
