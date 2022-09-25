@@ -3,13 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Gulshan/Documents/DreamProjects/MyApplication/app/src/main/res/drawable/cornerradiustextview.xml" value="0.2235" />
-        <entry key="..\:/Users/Gulshan/Documents/DreamProjects/MyApplication/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/Users/Gulshan/Documents/DreamProjects/MyApplication/app/src/main/res/layout/activity_login.xml" value="0.18885869565217392" />
         <entry key="..\:/Users/Gulshan/Documents/DreamProjects/MyApplication/app/src/main/res/layout/activity_main.xml" value="0.1431159420289855" />
-        <entry key="..\:/Users/Gulshan/Documents/DreamProjects/MyApplication/app/src/main/res/layout/fragment_home.xml" value="0.264" />
-        <entry key="..\:/Users/Gulshan/Documents/DreamProjects/MyApplication/app/src/main/res/layout/fragment_maps.xml" value="0.11018518518518519" />
-        <entry key="..\:/Users/Gulshan/Documents/DreamProjects/MyApplication/app/src/main/res/menu/bottom_nav_menu.xml" value="0.17777777777777778" />
       </map>
     </option>
   </component>
@@ -18,12 +13,5 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="VisualizationToolProject">
-    <option name="state">
-      <ProjectState>
-        <option name="scale" value="0.1" />
-      </ProjectState>
-    </option>
   </component>
 </project>
